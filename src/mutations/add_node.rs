@@ -14,10 +14,14 @@ impl Mutations {
         // select an connection gene and split
         let mut random_connection = genome.feed_forward.random(rng).cloned().unwrap();
 
-        let id = random_connection.next_id();
-
-        // construct new node gene
-        let new_node = Node::new(id, activation_pool.choose(rng).cloned().unwrap());
+        let new_node = loop {
+            let id = random_connection.next_id();
+            // construct new node gene
+            let new_node = Node::new(id, activation_pool.choose(rng).cloned().unwrap());
+            if !genome.hidden.contains(&new_node) {
+                break new_node;
+            }
+        };
 
         // insert new connection pointing to new node
         assert!(genome.feed_forward.insert(Connection::new(
