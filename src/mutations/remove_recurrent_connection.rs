@@ -14,7 +14,7 @@ impl Mutations {
             // make iterator wrap
             .cycle()
             // randomly offset into the iterator to choose any node
-            .skip((rng.gen::<f64>() * (genome.recurrent.len()) as f64).floor() as usize)
+            .skip((rng.gen::<f32>() * (genome.recurrent.len()) as f32).floor() as usize)
             .cloned()
             .next()
         {

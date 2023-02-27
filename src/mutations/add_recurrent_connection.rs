@@ -22,7 +22,7 @@ impl Mutations {
             .cycle()
             // randomly offset into the iterator to choose any node
             .skip(
-                (rng.gen::<f64>() * (genome.inputs.len() + genome.hidden.len()) as f64).floor()
+                (rng.gen::<f32>() * (genome.inputs.len() + genome.hidden.len()) as f32).floor()
                     as usize,
             )
             // just loop every value once

@@ -75,7 +75,7 @@ impl Genome {
         let mut rng = SmallRng::from_rng(thread_rng()).unwrap();
 
         for input in self.inputs.iterate_with_random_offset(&mut rng).take(
-            (structure.percent_of_connected_inputs * structure.number_of_inputs as f64).ceil()
+            (structure.percent_of_connected_inputs * structure.number_of_inputs as f32).ceil()
                 as usize,
         ) {
             // connect to every output
@@ -168,11 +168,11 @@ impl Genome {
     pub fn compatability_distance(
         genome_0: &Self,
         genome_1: &Self,
-        factor_genes: f64,
-        factor_weights: f64,
-        factor_activations: f64,
-        weight_cap: f64,
-    ) -> (f64, f64, f64, f64) {
+        factor_genes: f32,
+        factor_weights: f32,
+        factor_activations: f32,
+        weight_cap: f32,
+    ) -> (f32, f32, f32, f32) {
         let mut weight_difference_total = 0.0;
         let mut activation_difference = 0.0;
 
@@ -189,7 +189,7 @@ impl Genome {
                 .inspect(|(connection_0, connection_1)| {
                     weight_difference_total += (connection_0.weight - connection_1.weight).abs();
                 })
-                .count()) as f64;
+                .count()) as f32;
 
         let different_genes_count_total = (genome_0
             .feed_forward
@@ -198,7 +198,7 @@ impl Genome {
             + genome_0
                 .recurrent
                 .iterate_unique_genes(&genome_1.recurrent)
-                .count()) as f64;
+                .count()) as f32;
 
         let matching_nodes_count = genome_0
             .hidden
@@ -208,7 +208,7 @@ impl Genome {
                     activation_difference += 1.0;
                 }
             })
-            .count() as f64;
+            .count() as f32;
 
         let maximum_weight_difference = matching_genes_count_total * 2.0 * weight_cap;
 
@@ -518,9 +518,9 @@ mod tests {
         let genome_1 = genome_0.clone();
 
         let delta =
-            Genome::compatability_distance(&genome_0, &genome_1, 1.0, 0.4, 0.0, f64::INFINITY).0;
+            Genome::compatability_distance(&genome_0, &genome_1, 1.0, 0.4, 0.0, f32::INFINITY).0;
 
-        assert!(delta.abs() < f64::EPSILON);
+        assert!(delta.abs() < f32::EPSILON);
     }
 
     #[test]
@@ -557,7 +557,7 @@ mod tests {
         let delta = Genome::compatability_distance(&genome_0, &genome_1, 0.0, 2.0, 0.0, 2.0).0;
 
         // factor 1 times 1 expressed difference over 4 possible difference over factor 1
-        assert!((delta - 1.0 * 1.0 / 4.0 / 1.0).abs() < f64::EPSILON);
+        assert!((delta - 1.0 * 1.0 / 4.0 / 1.0).abs() < f32::EPSILON);
     }
 
     #[test]
@@ -595,10 +595,10 @@ mod tests {
             .insert(Connection::new(Id(2), 2.0, Id(1)));
 
         let delta =
-            Genome::compatability_distance(&genome_0, &genome_1, 2.0, 0.0, 0.0, f64::INFINITY).0;
+            Genome::compatability_distance(&genome_0, &genome_1, 2.0, 0.0, 0.0, f32::INFINITY).0;
 
         // factor 2 times 2 different genes over 3 total genes over factor 2
-        assert!((delta - 2.0 * 2.0 / 3.0 / 2.0).abs() < f64::EPSILON);
+        assert!((delta - 2.0 * 2.0 / 3.0 / 2.0).abs() < f32::EPSILON);
     }
 
     #[test]

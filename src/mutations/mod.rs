@@ -26,30 +26,30 @@ mod remove_recurrent_connection;
 pub enum Mutations {
     /// See [`Mutations::change_weights`].
     ChangeWeights {
-        chance: f64,
-        percent_perturbed: f64,
-        weight_cap: f64,
+        chance: f32,
+        percent_perturbed: f32,
+        weight_cap: f32,
     },
     /// See [`Mutations::change_activation`].
     ChangeActivation {
-        chance: f64,
+        chance: f32,
         activation_pool: Vec<Activation>,
     },
     /// See [`Mutations::add_node`].
     AddNode {
-        chance: f64,
+        chance: f32,
         activation_pool: Vec<Activation>,
     },
     /// See [`Mutations::add_connection`].
-    AddConnection { chance: f64 },
+    AddConnection { chance: f32 },
     /// See [`Mutations::add_recurrent_connection`].
-    AddRecurrentConnection { chance: f64 },
+    AddRecurrentConnection { chance: f32 },
     /// See [`Mutations::remove_node`].
-    RemoveNode { chance: f64 },
+    RemoveNode { chance: f32 },
     /// See [`Mutations::remove_connection`].
-    RemoveConnection { chance: f64 },
+    RemoveConnection { chance: f32 },
     /// See [`Mutations::remove_recurrent_connection`].
-    RemoveRecurrentConnection { chance: f64 },
+    RemoveRecurrentConnection { chance: f32 },
 }
 
 impl Mutations {
@@ -63,7 +63,7 @@ impl Mutations {
                 percent_perturbed,
                 weight_cap,
             } => {
-                if rng.gen::<f64>() < chance {
+                if rng.gen::<f32>() < chance {
                     Self::change_weights(percent_perturbed, weight_cap, genome, rng);
                 }
             }
@@ -71,17 +71,17 @@ impl Mutations {
                 chance,
                 activation_pool,
             } => {
-                if rng.gen::<f64>() < *chance {
+                if rng.gen::<f32>() < *chance {
                     Self::add_node(activation_pool, genome, rng)
                 }
             }
             &Mutations::AddConnection { chance } => {
-                if rng.gen::<f64>() < chance {
+                if rng.gen::<f32>() < chance {
                     return Self::add_connection(genome, rng);
                 }
             }
             &Mutations::AddRecurrentConnection { chance } => {
-                if rng.gen::<f64>() < chance {
+                if rng.gen::<f32>() < chance {
                     return Self::add_recurrent_connection(genome, rng);
                 }
             }
@@ -89,22 +89,22 @@ impl Mutations {
                 chance,
                 activation_pool,
             } => {
-                if rng.gen::<f64>() < *chance {
+                if rng.gen::<f32>() < *chance {
                     Self::change_activation(activation_pool, genome, rng)
                 }
             }
             &Mutations::RemoveNode { chance } => {
-                if rng.gen::<f64>() < chance {
+                if rng.gen::<f32>() < chance {
                     return Self::remove_node(genome, rng);
                 }
             }
             &Mutations::RemoveConnection { chance } => {
-                if rng.gen::<f64>() < chance {
+                if rng.gen::<f32>() < chance {
                     return Self::remove_connection(genome, rng);
                 }
             }
             &Mutations::RemoveRecurrentConnection { chance } => {
-                if rng.gen::<f64>() < chance {
+                if rng.gen::<f32>() < chance {
                     return Self::remove_recurrent_connection(genome, rng);
                 }
             }

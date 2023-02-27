@@ -15,12 +15,12 @@ use super::{Gene, Id};
 pub struct Connection {
     pub input: Id,
     pub output: Id,
-    pub weight: f64,
+    pub weight: f32,
     pub id_counter: u64,
 }
 
 impl Connection {
-    pub fn new(input: Id, weight: f64, output: Id) -> Self {
+    pub fn new(input: Id, weight: f32, output: Id) -> Self {
         Self {
             input,
             output,
@@ -42,13 +42,13 @@ impl Connection {
         Id(id_hasher.finish())
     }
 
-    pub fn perturb_weight(&mut self, weight_cap: f64, rng: &mut impl Rng) {
+    pub fn perturb_weight(&mut self, weight_cap: f32, rng: &mut impl Rng) {
         self.weight = Self::weight_perturbation(self.weight, weight_cap, rng);
     }
 
-    pub fn weight_perturbation(weight: f64, weight_cap: f64, rng: &mut impl Rng) -> f64 {
+    pub fn weight_perturbation(weight: f32, weight_cap: f32, rng: &mut impl Rng) -> f32 {
         // approximatly normal distributed sample, see: https://en.wikipedia.org/wiki/Irwin%E2%80%93Hall_distribution#Approximating_a_Normal_distribution
-        let mut perturbation = (0..12).map(|_| rng.gen::<f64>()).sum::<f64>() - 6.0;
+        let mut perturbation = (0..12).map(|_| rng.gen::<f32>()).sum::<f32>() - 6.0;
 
         while (weight + perturbation) > weight_cap || (weight + perturbation) < -weight_cap {
             perturbation = -perturbation / 2.0;

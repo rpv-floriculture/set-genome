@@ -15,7 +15,7 @@ impl Mutations {
             // make iterator wrap
             .cycle()
             // randomly offset into the iterator to choose any node
-            .skip((rng.gen::<f64>() * (genome.feed_forward.len()) as f64).floor() as usize)
+            .skip((rng.gen::<f32>() * (genome.feed_forward.len()) as f32).floor() as usize)
             // just loop every value once
             .take(genome.feed_forward.len())
             .find(|removal_candidate| {

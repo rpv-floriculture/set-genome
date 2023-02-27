@@ -230,7 +230,7 @@ pub struct Structure {
     /// Number of output nodes.
     pub number_of_outputs: usize,
     /// Percent of input nodes initially connected to all poutput nodes.
-    pub percent_of_connected_inputs: f64,
+    pub percent_of_connected_inputs: f32,
     /// Activation function for all output nodes.
     pub outputs_activation: Activation,
     /// Seed to generate the initial node ids.

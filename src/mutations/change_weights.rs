@@ -6,15 +6,15 @@ use crate::genome::Genome;
 impl Mutations {
     /// This mutation alters `percent_perturbed` connection weights with perturbations sampled from calls to [`GenomeRng::weight_perturbation`].
     pub fn change_weights(
-        percent_perturbed: f64,
-        weight_cap: f64,
+        percent_perturbed: f32,
+        weight_cap: f32,
         genome: &mut Genome,
         rng: &mut impl Rng,
     ) {
         let change_feed_forward_amount =
-            (percent_perturbed * genome.feed_forward.len() as f64).ceil() as usize;
+            (percent_perturbed * genome.feed_forward.len() as f32).ceil() as usize;
         let change_recurrent_amount =
-            (percent_perturbed * genome.recurrent.len() as f64).ceil() as usize;
+            (percent_perturbed * genome.recurrent.len() as f32).ceil() as usize;
 
         genome.feed_forward = genome
             .feed_forward
@@ -57,7 +57,7 @@ mod tests {
         Mutations::change_weights(1.0, 1.0, &mut genome, &mut thread_rng());
 
         assert!(
-            (old_weight - genome.feed_forward.iter().next().unwrap().weight).abs() > f64::EPSILON
+            (old_weight - genome.feed_forward.iter().next().unwrap().weight).abs() > f32::EPSILON
         );
     }
 }

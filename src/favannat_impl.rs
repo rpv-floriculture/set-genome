@@ -9,7 +9,7 @@ impl NodeLike for Node {
     fn id(&self) -> usize {
         self.id.0 as usize
     }
-    fn activation(&self) -> fn(f64) -> f64 {
+    fn activation(&self) -> fn(f32) -> f32 {
         match self.activation {
             Activation::Linear => activations::LINEAR,
             Activation::Sigmoid => activations::SIGMOID,
@@ -33,7 +33,7 @@ impl EdgeLike for Connection {
     fn end(&self) -> usize {
         self.output.0 as usize
     }
-    fn weight(&self) -> f64 {
+    fn weight(&self) -> f32 {
         self.weight
     }
 }

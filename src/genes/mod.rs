@@ -79,7 +79,7 @@ impl<T: Gene> Genes<T> {
     pub fn iterate_with_random_offset(&self, rng: &mut impl Rng) -> impl Iterator<Item = &T> {
         self.iter()
             .cycle()
-            .skip((rng.gen::<f64>() * self.len() as f64).floor() as usize)
+            .skip((rng.gen::<f32>() * self.len() as f32).floor() as usize)
             .take(self.len())
     }
 
@@ -125,7 +125,7 @@ impl<T: Gene + Clone> Genes<T> {
     pub fn cross_in(&self, other: &Self, rng: &mut impl Rng) -> Self {
         self.iterate_matching_genes(other)
             .map(|(gene_self, gene_other)| {
-                if rng.gen::<f64>() < 0.5 {
+                if rng.gen::<f32>() < 0.5 {
                     gene_self.clone()
                 } else {
                     gene_self.recombine(gene_other)
